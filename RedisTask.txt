@@ -1,6 +1,0 @@
-Task for you 
-Read about redis, 
-write a code in go to connect to redis,
-Producer: generate random values of age and push it to redis 
-Consumer: consume values from redis and find average and total age.
-Match the values from producer and consumer.
