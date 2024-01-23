@@ -29,25 +29,9 @@ var totalAgeConsume, totalCharConsume = 0, 0
 var mutexProduceConsumer = &sync.Mutex{}
 
 func main() {
-	err := godotenv.Load("config.env")
-	if err != nil {
-		slog.Error("Error loading .env file:", err)
-	}
-	
-	// Access the environment variables
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbPass := os.Getenv("DB_PASS")
-	dbIndex, _ := strconv.Atoi(os.Getenv("DB_INDEX"))
+	var err error
 
-	// Connection
-	client := redis.NewClient(&redis.Options{
-		Addr: fmt.Sprintf("%s:%s", dbHost, dbPort),
-		Password: dbPass,
-		DB: dbIndex,
-	})
-
-	logFile, err := os.OpenFile("log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+	logFile, err := os.OpenFile("log.txt", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		slog.Error("Error in Opening Log file:", err)
 	}
@@ -63,6 +47,24 @@ func main() {
 		WithWho("Vrutik Savla").
 		WithStatus(Success).
 		WithRemoteIP("")	
+
+	err = godotenv.Load("config.env")
+	if err != nil {
+		logger.Error(err)
+	}
+	
+	// Access the environment variables
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbPass := os.Getenv("DB_PASS")
+	dbIndex, _ := strconv.Atoi(os.Getenv("DB_INDEX"))
+
+	// Connection
+	client := redis.NewClient(&redis.Options{
+		Addr: fmt.Sprintf("%s:%s", dbHost, dbPort),
+		Password: dbPass,
+		DB: dbIndex,
+	})
 
 	var producerConsumerWg sync.WaitGroup
 	producerConsumerWg.Add(2)
