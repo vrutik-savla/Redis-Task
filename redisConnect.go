@@ -70,7 +70,7 @@ func main() {
 	producerConsumerWg.Add(2)
 	go func() {
 		defer producerConsumerWg.Done()
-		createProducers(&producerConsumerWg, client, 10, 2, logger)
+		createProducers(&producerConsumerWg, client, 1000, 100, logger)
 	}()
 	go func() {
 		defer producerConsumerWg.Done()
@@ -80,7 +80,7 @@ func main() {
 		
 	logger.LogActivity("Checksum Producer", map[string]any{"Total Characters Produced": totalCharProduce})
 	logger.LogActivity("Checksum Producer", map[string]any{"Total Age Produced": totalAgeProduce})
-	logger.LogActivity("Checksum Consumer", map[string]any{"Total Age Consumed": totalAgeConsume})
+	logger.LogActivity("Checksum Consumer", map[string]any{"Total Characters Consumed": totalCharConsume})
 	logger.LogActivity("Checksum Producer", map[string]any{"Total Age Consumed": totalAgeConsume})
 
 	// fmt.Printf("Total Characters Produced: %d, Total Age Produced: %d", totalCharProduce, totalAgeProduce)
